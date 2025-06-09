@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\ServiceProvider; // Impor ServiceProvider
+use Illuminate\Support\Facades\Facade;
+
 return [
 
     /*
@@ -65,7 +68,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Jakarta',
 
     /*
     |--------------------------------------------------------------------------
@@ -122,5 +125,37 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Autoloaded Service Providers
+    |--------------------------------------------------------------------------
+    |
+    | The service providers listed here will be automatically loaded on the
+    | request to your application. Feel free to add your own services to
+    | this array to grant expanded functionality to your applications.
+    |
+    */
+
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        // ... providers lainnya ...
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class, // Tambahkan ini
+    ])->toArray(),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Class Aliases
+    |--------------------------------------------------------------------------
+    |
+    | This array of class aliases will be registered when this application
+    | is started. However, feel free to register as many as you wish as
+    | the aliases are "lazy" loaded so they don't hinder performance.
+    |
+    */
+
+    'aliases' => Facade::defaultAliases()->merge([
+        // ... aliases lainnya ...
+        'QrCodeFacade' => SimpleSoftwareIO\QrCode\Facades\QrCode::class, // Tambahkan alias QrCodeFacade
+    ])->toArray(),
 
 ];

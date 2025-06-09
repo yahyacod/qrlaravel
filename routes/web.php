@@ -1,25 +1,18 @@
 <?php
 
+use App\Http\Controllers\QrController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
-// Menampilkan halaman QR Code Generator
-Route::get('/qr-code', function () {
-    return view('qr');
-})->name('qr.page');
+Route::get('/', function () {
+    return view('welcome');
+});
 
-// Memproses QR Code dan menampilkan dalam grid
-Route::post('/generate-qr', function (Request $request) {
-    $request->validate([
-        'data' => 'required|string'
-    ]);
-
-    // Membuat array QR Code
-    $qrList = [];
-    for ($i = 0; $i < 8; $i++) { // 20 QR Code per halaman
-        $qrList[] = QrCode::size(50)->generate($request->input('data'));
-    }
-
-    return redirect()->route('qr.page')->with('qrList', $qrList);
-})->name('generate.qr');
+Route::get('/qr', [QrController::class, 'generateQr'])->name('qr.generate');
+Route::post('/qr', [QrController::class, 'generateQr'])->name('qr.generate');
+Route::post('/qr/clean', [QrController::class, 'clean'])->name('qr.clean');
+Route::get('/qr/list', [QrController::class, 'index'])->name('qr.index');
+Route::get('/qr/{id}/edit', [QrController::class, 'edit'])->name('qr.edit');
+Route::put('/qr/{id}', [QrController::class, 'update'])->name('qr.update');
+Route::delete('/qr/{id}', [QrController::class, 'destroy'])->name('qr.destroy');
+Route::post('/qr/save', [QrController::class, 'save'])->name('qr.save');
+Route::post('/qr/save-selected', [QrController::class, 'saveSelected'])->name('qr.saveSelected');
